@@ -1,0 +1,13 @@
+---
+easy_rsa_environ:
+  KEY_SIZE: 2048
+  CA_EXPIRE: 3650
+  KEY_EXPIRE: 3650
+  KEY_COUNTRY: "EG"
+  KEY_PROVINCE: "GZ"
+  KEY_CITY: "October"
+  KEY_ORG: "Frankie"
+  KEY_EMAIL: "mustafa.khattab@gmail.com"
+  KEY_OU: "Frankie-Tail"
+  KEY_NAME: "FrankieRSA"
+  KEY_CN: "{{ common_name | mandatory }}"

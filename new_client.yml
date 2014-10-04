@@ -1,0 +1,29 @@
+---
+- hosts: "{{ target }}"
+  remote_user: root
+  vars_files:
+    - vars/ca.yml
+  tasks:
+    - name: create client certificate
+      shell: . ./vars && export KEY_CN={{ common_name }} && ./pkitool {{ common_name | lower }}
+      args:
+        chdir: /etc/openvpn/easy-rsa
+        creates: /etc/openvpn/easy-rsa/keys/{{ common_name | lower }}.crt
+
+    - name: create client keys directory
+      file: path=/etc/openvpn/clients state=directory
+
+    - name: upload client template
+      template: src=files/client.conf.j2 dest=/etc/openvpn/clients/{{ common_name | lower }}.conf
+
+    - name: zip client certificates and configuration
+      shell: zip -j {{ common_name | lower }}.zip {{ common_name | lower }}.conf ../easy-rsa/keys/{{ common_name | lower }}.crt ../easy-rsa/keys/{{ common_name | lower }}.key ../easy-rsa/keys/ca.crt ../easy-rsa/keys/ta.key
+      args:
+        chdir: /etc/openvpn/clients
+        creates: /etc/openvpn/clients/mustafa.zip
+
+    - name: remove client conf
+      file: path=/etc/openvpn/clients/{{ common_name | lower }}.conf state=absent
+
+    - name: fetch client zip
+      fetch: src=/etc/openvpn/clients/{{ common_name | lower }}.zip dest=clients/ flat=yes validate_md5=yes fail_on_missing=yes
