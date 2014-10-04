@@ -5,7 +5,7 @@
     - vars/ca.yml
   tasks:
     - name: create client certificate
-      shell: . ./vars && export KEY_CN={{ common_name }} && ./pkitool {{ common_name | lower }}
+      shell: . ./vars && export KEY_CN={{ common_name | mandatory }} && ./pkitool {{ common_name | lower }}
       args:
         chdir: /etc/openvpn/easy-rsa
         creates: /etc/openvpn/easy-rsa/keys/{{ common_name | lower }}.crt
