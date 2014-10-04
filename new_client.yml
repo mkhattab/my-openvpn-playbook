@@ -20,7 +20,7 @@
       shell: zip -j {{ common_name | lower }}.zip {{ common_name | lower }}.conf ../easy-rsa/keys/{{ common_name | lower }}.crt ../easy-rsa/keys/{{ common_name | lower }}.key ../easy-rsa/keys/ca.crt ../easy-rsa/keys/ta.key
       args:
         chdir: /etc/openvpn/clients
-        creates: /etc/openvpn/clients/mustafa.zip
+        creates: /etc/openvpn/clients/{{ common_name | lower }}.zip
 
     - name: remove client conf
       file: path=/etc/openvpn/clients/{{ common_name | lower }}.conf state=absent
