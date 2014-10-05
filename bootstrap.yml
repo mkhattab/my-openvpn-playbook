@@ -3,6 +3,8 @@
   remote_user: root
   vars_files:
     - vars/ca.yml
+  handlers:
+    - include: handlers.yml
   tasks:
     - name: installing base packages
       apt: name={{ item }} state=present update_cache=yes
@@ -61,6 +63,16 @@
 
     - name: upload server.conf template
       template: src=files/server.conf.j2 dest=/etc/openvpn/server.conf
+      tags:
+        - conf
+      notify:
+        - restart openvpn
 
     - name: create client config directory
       file: path=/etc/openvpn/ccd state=directory
+
+    - name: enable ipv4 forwarding
+      sysctl: name="net.ipv4.ip_forward" value=1 sysctl_set=yes state=present reload=yes
+
+    - name: start openvpn
+      service: name=openvpn state=started
