@@ -4,3 +4,6 @@
 
 - name: reload openvpn
   service: name=openvpn state=reloaded
+
+- name: reload firewall
+  service: name=iptables-persistent state=reloaded
