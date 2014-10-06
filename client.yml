@@ -39,6 +39,6 @@
         - new-client
 
     - name: fetch client zip
-      fetch: src=/etc/openvpn/clients/{{ common_name | lower }}.zip dest=clients/ flat=yes validate_md5=yes fail_on_missing=yes
+      fetch: src=/etc/openvpn/clients/{{ common_name | lower }}.zip dest=client-keys/ flat=yes validate_md5=yes fail_on_missing=yes
       tags:
         - new-client
