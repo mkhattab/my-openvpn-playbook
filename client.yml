@@ -3,7 +3,10 @@
   remote_user: root
   vars_files:
     - vars/ca.yml
+    - vars/server.yml
     - vars/client.yml
+  handlers:
+    - include: handlers.yml
   tasks:
     - name: create client certificate
       shell: . ./vars && ./pkitool {{ common_name | lower }}
@@ -42,3 +45,8 @@
       fetch: src=/etc/openvpn/clients/{{ common_name | lower }}.zip dest=client-keys/ flat=yes validate_md5=yes fail_on_missing=yes
       tags:
         - new-client
+
+    - name: sync client-config directory
+      synchronize: src=client-config/ dest=/etc/openvpn/{{ server_client_config_dir }} rsync_opts="--exclude='.*'"
+      tags:
+        - sync-ccd
