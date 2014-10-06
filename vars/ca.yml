@@ -1,4 +1,6 @@
 ---
+easy_rsa_dir: /etc/openvpn/easy-rsa
+keys_dir: "{{ easy_rsa_dir }}/keys"
 easy_rsa_environ:
   KEY_SIZE: 2048
   CA_EXPIRE: 3650

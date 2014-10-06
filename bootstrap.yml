@@ -3,6 +3,7 @@
   remote_user: root
   vars_files:
     - vars/ca.yml
+    - vars/server.yml
   handlers:
     - include: handlers.yml
   tasks:
