@@ -36,6 +36,8 @@
       args:
         chdir: /etc/openvpn/easy-rsa
         creates: /etc/openvpn/easy-rsa/keys/ca.crt
+      environment:
+        KEY_CN: "{{ common_name | mandatory }}"
 
     - name: set server certificate common name
       set_fact:
@@ -44,10 +46,12 @@
     - debug: var=common_name
 
     - name: create server certificate
-      shell: . ./vars && export KEY_CN={{ common_name }} && ./pkitool --server server
+      shell: . ./vars && ./pkitool --server server
       args:
         chdir: /etc/openvpn/easy-rsa
         creates: /etc/openvpn/easy-rsa/keys/server.crt
+      environment:
+        KEY_CN: "{{ common_name | mandatory }}"
 
     - name: generate dh parameters
       shell: . ./vars && ./build-dh

@@ -10,4 +10,3 @@ easy_rsa_environ:
   KEY_EMAIL: "mustafa.khattab@gmail.com"
   KEY_OU: "Frankie-Tail"
   KEY_NAME: "FrankieRSA"
-  KEY_CN: "{{ common_name | mandatory }}"
