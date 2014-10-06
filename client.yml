@@ -14,7 +14,7 @@
         chdir: /etc/openvpn/easy-rsa
         creates: /etc/openvpn/easy-rsa/keys/{{ common_name | lower }}.crt
       environment:
-        KEY_CN: "{{ common_name | mandatory }}"
+        KEY_CN: "{{ common_name | mandatory | lower }}"
       tags:
         - new-client
 
