@@ -1,4 +1,5 @@
 ---
+server_client_config_dir: ccd
 # Remaining server options are in the template server.conf.j2
 server_config:
   # - local 127.0.0.1
@@ -12,7 +13,7 @@ server_config:
   - server 172.16.1.0 255.255.255.0
   - ifconfig-pool-persist ipp.txt
   # - push "10.8.0.0 255.255.255.0"
-  - client-config-dir ccd
+  - client-config-dir {{ server_client_config_dir }}
   # - route 10.8.0.0 255.255.255.0
   # - client-to-client
   # - duplicate-cn
@@ -32,3 +33,4 @@ server_config:
   # - log-append  openvpn.log
   - verb 3
   # - mute 20
+  - management localhost 7505
