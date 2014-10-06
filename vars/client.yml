@@ -1,0 +1,25 @@
+---
+# Remaining client options are in template client.conf.j2
+client_config:
+  - client
+  - dev tun
+  - proto udp
+  - remote {{ ansible_fqdn }} 1194
+  # - remote random
+  - resolv-retry infinite
+  - nobind
+  - user nobody
+  - group nobody
+  - persist-key
+  - persist-tun
+  # - http-proxy-retry
+  # - http-proxy [proxy server] [proxy port #]
+  - mute-replay-warnings
+  - ca ca.crt
+  - cert {{ common_name | lower }}.crt
+  - key {{ common_name | lower }}.key
+  - ns-cert-type server
+  - tls-auth ta.key 1
+  - comp-lzo
+  - verb 3
+  # - mute 20
