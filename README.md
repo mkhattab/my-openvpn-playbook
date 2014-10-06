@@ -19,7 +19,7 @@ Installing Ansible and DoPy (Digital Ocean API library):
 pip install ansible dopy
 ```
 
-Also, set the DO API keys:
+Also, set the DO API keys before running the playbook commands:
 
 ```bash
 export DO_CLIENT_ID='client_id'
