@@ -5,16 +5,20 @@
     - vars/ca.yml
     - vars/server.yml
     - vars/client.yml
+  vars:
+    KEY_CN: "{{ common_name | lower | mandatory }}"
   handlers:
     - include: handlers.yml
   tasks:
+    - debug: var=KEY_CN
+      tags:
+        - new-client
+
     - name: create client certificate
-      shell: . ./vars && ./pkitool {{ common_name | lower }}
+      shell: . ./vars && KEY_CN="{{ KEY_CN }}" ./pkitool {{ KEY_CN }}
       args:
         chdir: /etc/openvpn/easy-rsa
-        creates: /etc/openvpn/easy-rsa/keys/{{ common_name | lower }}.crt
-      environment:
-        KEY_CN: "{{ common_name | mandatory | lower }}"
+        creates: /etc/openvpn/easy-rsa/keys/{{ KEY_CN }}.crt
       tags:
         - new-client
 
@@ -24,25 +28,25 @@
         - new-client
 
     - name: upload client template
-      template: src=files/client.conf.j2 dest=/etc/openvpn/clients/{{ common_name | lower }}.conf
+      template: src=files/client.conf.j2 dest=/etc/openvpn/clients/{{ KEY_CN }}.conf
       tags:
         - new-client
 
     - name: zip client certificates and configuration
-      shell: zip -j {{ common_name | lower }}.zip {{ common_name | lower }}.conf ../easy-rsa/keys/{{ common_name | lower }}.crt ../easy-rsa/keys/{{ common_name | lower }}.key ../easy-rsa/keys/ca.crt ../easy-rsa/keys/ta.key
+      shell: zip -j {{ KEY_CN }}.zip {{ KEY_CN }}.conf ../easy-rsa/keys/{{ KEY_CN }}.crt ../easy-rsa/keys/{{ KEY_CN }}.key ../easy-rsa/keys/ca.crt ../easy-rsa/keys/ta.key
       args:
         chdir: /etc/openvpn/clients
-        creates: /etc/openvpn/clients/{{ common_name | lower }}.zip
+        creates: /etc/openvpn/clients/{{ KEY_CN }}.zip
       tags:
         - new-client
 
     - name: remove client conf
-      file: path=/etc/openvpn/clients/{{ common_name | lower }}.conf state=absent
+      file: path=/etc/openvpn/clients/{{ KEY_CN }}.conf state=absent
       tags:
         - new-client
 
     - name: fetch client zip
-      fetch: src=/etc/openvpn/clients/{{ common_name | lower }}.zip dest=client-keys/ flat=yes validate_md5=yes fail_on_missing=yes
+      fetch: src=/etc/openvpn/clients/{{ KEY_CN }}.zip dest=client-keys/ flat=yes validate_md5=yes fail_on_missing=yes
       tags:
         - new-client
 
